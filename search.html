@@ -1,0 +1,17 @@
+<div class="container mt-4">
+    <h1>Search Photos</h1>
+    <form id="search-form" class="mb-3">
+        <input type="text" id="query" class="form-control" placeholder="Search for photos...">
+    </form>
+    <div id="search-results" class="row row-cols-1 row-cols-md-3 g-4"></div>
+</div>
+
+<script src="config.js"></script>
+<script src="js/app.js"></script>
+<script>
+    document.getElementById("search-form").addEventListener("submit", function(e){
+        e.preventDefault();
+        const query = document.getElementById("query").value;
+        searchPhotos(query);
+    });
+</script>
