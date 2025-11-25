@@ -1,38 +1,270 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <title>Favorites</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Favorites</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #fafafa;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Teks Besar di luar HP */
+    .title-outside {
+        font-size: 32px;
+        font-weight: 700;
+        padding: 20px;
+        text-align: center;
+    }
+
+    /* Container HP */
+    .phone-frame {
+        width: 420px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 30px;
+        padding-bottom: 40px;
+        border: 2px solid #ddd;
+    }
+
+    /* Navbar */
+    .navbar {
+        position: sticky;
+        top: 0;
+        background: white;
+        z-index: 50;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 14px 20px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .navbar img {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    .tabs {
+        display: flex;
+        gap: 20px;
+        font-size: 16px;
+        font-weight: 500;
+        margin: 0 auto;
+        transform: translateX(-20px);
+    }
+
+    .tab-active {
+        border-bottom: 3px solid black;
+        padding-bottom: 4px;
+        font-weight: 700;
+    }
+
+    .icon {
+        font-size: 22px;
+        cursor: pointer;
+    }
+
+    /* Search */
+    .search-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 16px 20px;
+    }
+
+    .search-box {
+        flex: 1;
+        background: #eeeeee;
+        padding: 10px 14px;
+        border-radius: 50px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .search-box input {
+        border: none;
+        background: none;
+        outline: none;
+        font-size: 15px;
+        width: 100%;
+    }
+
+    .pill-btn {
+        background: #eee;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 13px;
+        cursor: pointer;
+    }
+
+    /* Grid Board */
+    .grid {
+        columns: 2;
+        padding: 10px 16px;
+        column-gap: 14px;
+    }
+
+    .board-card {
+        break-inside: avoid;
+        margin-bottom: 16px;
+    }
+
+    .thumb {
+        width: 100%;
+        border-radius: 18px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .thumb img {
+        width: 100%;
+        border-radius: 18px;
+        display: block;
+    }
+
+    /* Overlay Gembok */
+    .lock-icon {
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        background: rgba(0,0,0,0.65);
+        color: white;
+        padding: 5px 6px;
+        border-radius: 50%;
+        font-size: 12px;
+    }
+
+    /* Board info */
+    .board-info {
+        margin-top: 6px;
+    }
+
+    .board-title {
+        font-size: 15px;
+        font-weight: 700;
+    }
+
+    .metadata {
+        font-size: 13px;
+        color: #777;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .avatar-small {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+</style>
 </head>
+
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="index.html">Unsplash Client</a>
-    <div class="collapse navbar-collapse">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-        <li class="nav-item"><a class="nav-link" href="search.html">Search</a></li>
-        <li class="nav-item"><a class="nav-link active" href="favorites.html">Favorites</a></li>
-      </ul>
+<div class="title-outside">Halaman Favorites</div>
+
+<div class="phone-frame">
+
+    <!-- NAVBAR -->
+    <div class="navbar">
+        <img src="https://i.pravatar.cc/150?img=5" alt="profile">
+        
+        <div class="tabs">
+            <div class="tab-active">Papan</div>
+            <div>Pin</div>
+        </div>
+
+        <div class="icon">⚙️</div>
     </div>
-  </div>
-</nav>
 
-<div class="container mt-4">
-    <h1 class="mb-4">Your Favorites</h1>
+    <!-- SEARCH -->
+    <div class="search-row">
+        <div class="search-box">
+            🔍
+            <input type="text" placeholder="Cari">
+        </div>
+        <div class="icon">⇅</div>
+        <div class="icon">＋</div>
+    </div>
 
-    <!-- Masonry Grid -->
-    <div id="favorites-grid" class="masonry-grid"></div>
+    <!-- Filter Cepat -->
+    <div style="padding: 0 20px; display:flex; gap:10px;">
+        <div class="pill-btn">Semua</div>
+        <div class="pill-btn">Rahasia</div>
+        <div class="pill-btn">Kolaborasi</div>
+    </div>
+
+    <!-- GRID BOARD -->
+    <div class="grid">
+
+        <!-- CARD 1 -->
+        <div class="board-card">
+            <div class="thumb">
+                <img src="https://source.unsplash.com/random/400x500?shopping" alt="">
+                <div class="lock-icon">🔒</div>
+            </div>
+            <div class="board-info">
+                <div class="board-title">Pin belanjamu</div>
+                <div class="metadata">
+                    62 pin • 1 bln
+                    <img src="https://i.pravatar.cc/100?img=11" class="avatar-small">
+                </div>
+            </div>
+        </div>
+
+        <!-- CARD 2 -->
+        <div class="board-card">
+            <div class="thumb">
+                <img src="https://source.unsplash.com/random/400x600?travel" alt="">
+            </div>
+            <div class="board-info">
+                <div class="board-title">Perjalanan musim...</div>
+                <div class="metadata">
+                    6 kolase
+                    <img src="https://i.pravatar.cc/100?img=32" class="avatar-small">
+                </div>
+            </div>
+        </div>
+
+        <!-- CARD 3 -->
+        <div class="board-card">
+            <div class="thumb">
+                <img src="https://source.unsplash.com/random/400x450?plants" alt="">
+                <div class="lock-icon">🔒</div>
+            </div>
+            <div class="board-info">
+                <div class="board-title">Tanaman rumah</div>
+                <div class="metadata">41 pin • 2 bln</div>
+            </div>
+        </div>
+
+        <!-- CARD 4 -->
+        <div class="board-card">
+            <div class="thumb">
+                <img src="https://source.unsplash.com/random/400x480?design" alt="">
+            </div>
+            <div class="board-info">
+                <div class="board-title">Referensi desain</div>
+                <div class="metadata">
+                    23 pin • 5 bln
+                    <img src="https://i.pravatar.cc/100?img=15" class="avatar-small">
+                </div>
+            </div>
+        </div>
+
+    </div>
+
 </div>
-
-<script src="config.js"></script>
-<script src="js/app.js"></script>
-<script>
-    loadFavorites();
-</script>
 
 </body>
 </html>
