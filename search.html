@@ -13,7 +13,7 @@
             font-family: 'Segoe UI', sans-serif;
         }
 
-        /* SEARCH BAR*/
+        /* SEARCH BAR */
         .search-input {
             background: #fff;
             border: 1px solid #ddd;
@@ -29,7 +29,7 @@
             box-shadow: 0 0 8px rgba(0,0,0,0.1);
         }
 
-        /* PHOTO MASONRY*/
+        /* MASONRY */
         .masonry {
             column-count: 4;
             column-gap: 1rem;
@@ -90,7 +90,6 @@
             margin: 0;
         }
 
-        /* SECTION TITLE */
         .section-title {
             font-size: 1.6rem;
             font-weight: 700;
@@ -101,10 +100,11 @@
 </head>
 
 <body>
+
+<!-- NAVBAR -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
     <a class="navbar-brand" href="index.html">Unsplash Client</a>
-
     <div class="collapse navbar-collapse">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
@@ -117,31 +117,33 @@
 
 <div class="container mt-4">
 
-    <!-- TITLE -->
     <h1 class="text-center fw-bold mb-4">Find Amazing Photos</h1>
 
-    <!-- FORM SEARCH -->
+    <!-- SEARCH FORM -->
     <form id="search-form" class="mb-4" style="max-width: 800px; margin: auto;">
-        <input type="text" id="query" class="form-control search-input" placeholder="Search inspiration — coffee, cat, landscape...">
+        <input type="text" id="query" class="form-control search-input"
+               placeholder="Search inspiration — coffee, cat, landscape...">
     </form>
 
-    <!-- REKOMENDASI -->
-    <h3 class="section-title">Recommended</h3>
-    <div id="recommended-photos" class="masonry mb-5"></div>
+    <!-- RECOMMENDED -->
+    <div id="recommended-section">
+        <h3 class="section-title">Recommended</h3>
+        <div id="recommended-photos" class="masonry mb-5"></div>
+    </div>
 
-    <!-- HASIL SEARCH -->
+    <!-- SEARCH RESULTS -->
     <h3 class="section-title" id="search-title" style="display:none;">Search Results</h3>
     <div id="search-results" class="masonry"></div>
 
 </div>
 
+
+<!-- MAIN SCRIPTS -->
 <script src="config.js"></script>
 <script src="js/app.js"></script>
 
 <script>
-
-
-// LOAD RECOMMENDED PHOTOS
+// ============= LOAD RECOMMENDED PHOTOS =============
 async function loadRecommended() {
     const res = await fetch(`${UNSPLASH_API_URL}/photos?client_id=${UNSPLASH_ACCESS_KEY}`);
     const data = await res.json();
@@ -149,18 +151,25 @@ async function loadRecommended() {
 }
 
 
-// EVENT SEARCH
+// ============= SEARCH EVENT =============
 document.getElementById("search-form").addEventListener("submit", function(e) {
     e.preventDefault();
+
     const query = document.getElementById("query").value.trim();
-    if (query !== "") {
-        document.getElementById("search-title").style.display = "block";
-        searchPhotos(query);
-    }
+    if (query === "") return;
+
+    // Hide recommended
+    document.getElementById("recommended-section").style.display = "none";
+
+    // Show search result title
+    document.getElementById("search-title").style.display = "block";
+
+    // Run search
+    searchPhotos(query);
 });
 
 
-// CUSTOM MASONRY RENDERER
+// ============= CUSTOM RENDERER FOR MASONRY =============
 function displayMasonry(photos, containerId) {
     const container = document.getElementById(containerId);
     container.innerHTML = "";
@@ -179,19 +188,18 @@ function displayMasonry(photos, containerId) {
 }
 
 
-// OVERRIDE DISPLAY PHOTOS FOR SEARCH RESULT
+// ============= OVERRIDE displayPhotos UNTUK HASIL SEARCH =============
 const originalDisplayPhotos = displayPhotos;
-displayPhotos = function(photos, containerId) {
 
-    if (containerId !== "search-results") {
-        return originalDisplayPhotos(photos, containerId);
+displayPhotos = function (photos, containerId) {
+    if (containerId === "search-results") {
+        return displayMasonry(photos, "search-results");
     }
-
-    displayMasonry(photos, "search-results");
+    return originalDisplayPhotos(photos, containerId);
 };
 
 
-// LOAD INITIAL RECOMMENDED
+// ============= INITIAL LOAD =============
 loadRecommended();
 
 </script>
