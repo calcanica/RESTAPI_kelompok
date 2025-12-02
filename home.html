@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wallpaper Home – Unsplash Client</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #fff;
+            margin: 0;
+            padding: 0 30px;
+        }
+
+        h1 {
+            font-size: 40px;
+            margin-top: 40px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 17px;
+            color: #555;
+            max-width: 650px;
+            margin-bottom: 20px;
+        }
+
+        .tags {
+            margin-bottom: 30px;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #f2f2f2;
+            border-radius: 20px;
+            margin-right: 10px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .tag:hover {
+            background: #ddd;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 15px;
+        }
+
+        .card {
+            border-radius: 10px;
+            overflow: hidden;
+            background: #fafafa;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: 0.3s;
+        }
+
+        .card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .card-title {
+            padding: 10px;
+            font-size: 15px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER TITLE SECTION -->
+    <h1>Desktop Wallpaper for PC</h1>
+
+    <p class="subtitle">
+        40,000+ royalty free desktop wallpaper in HD & 4K quality. Download the best desktop wallpaper
+        photos for your laptop & PC screens.
+    </p>
+
+    <!-- CATEGORY TAGS -->
+    <div class="tags">
+        <span class="tag" onclick="loadPhotos('wallpaper')">wallpaper</span>
+        <span class="tag" onclick="loadPhotos('hd')">hd wallpaper</span>
+        <span class="tag" onclick="loadPhotos('background')">desktop background</span>
+        <span class="tag" onclick="loadPhotos('4k')">4k wallpaper</span>
+    </div>
+
+    <!-- GALLERY -->
+    <div class="gallery" id="gallery"></div>
+
+    <script>
+        const UNSPLASH_KEY = "CCRWxaA4HNKn4f3O2ocNaxjdVI_5GhufL3byVXhUDwk";
+
+        async function loadPhotos(query = "popular") {
+            const url = query === "popular"
+                ? `https://api.unsplash.com/photos?per_page=12&client_id=${UNSPLASH_KEY}`
+                : `https://api.unsplash.com/search/photos?query=${query}&per_page=12&client_id=${UNSPLASH_KEY}`;
+
+            const res = await fetch(url);
+            const data = await res.json();
+
+            // If search → use data.results
+            const photos = data.results || data;
+
+            const gallery = document.getElementById("gallery");
+            gallery.innerHTML = "";
+
+            photos.forEach(photo => {
+                const card = `
+                    <div class="card">
+                        <img src="${photo.urls.small}" alt="">
+                        <div class="card-title">${photo.user.name}</div>
+                    </div>
+                `;
+                gallery.innerHTML += card;
+            });
+        }
+
+        // Load default on page open
+        loadPhotos();
+    </script>
+
+</body>
+</html>
